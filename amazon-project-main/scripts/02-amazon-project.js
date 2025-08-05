@@ -1,6 +1,6 @@
-producthtml = '';
+producthtml = "";
 products.forEach((product) => {
-    producthtml += `
+  producthtml += `
    <div class="product-container">
 
             <div class="product-image-container">
@@ -12,7 +12,9 @@ products.forEach((product) => {
             </div>
 
             <div class="product-rating-container">
-              <img src="${product.rating.stars}" alt="" class="product-rating-stars">
+              <img src="${
+                product.rating.stars
+              }" alt="" class="product-rating-stars">
 
               <div class="product-rating-count link-primary">
                ${product.rating.count}
@@ -20,7 +22,7 @@ products.forEach((product) => {
             </div>
 
             <div class="product-price">
-              $${(product.priceCents/100).toFixed(2)}
+              $${(product.priceCents / 100).toFixed(2)}
             </div>
 
             <div class="product-quantity-container">
@@ -46,35 +48,33 @@ products.forEach((product) => {
             </div>
 
             
-            <button class="add-to-cart-button button-primary" data-product-id= ${product.id}>
+            <button class="add-to-cart-button button-primary" data-product-id= ${
+              product.id
+            }>
               Add to Cart
             </button>
           </div>
      `;
 });
 
-document.querySelector('.js-product-grid').innerHTML = producthtml;
-const addCartbtn = document.querySelectorAll('.add-to-cart-button');
+document.querySelector(".js-product-grid").innerHTML = producthtml;
+const addCartbtn = document.querySelectorAll(".add-to-cart-button");
 addCartbtn.forEach((button) => {
-  button.addEventListener('click', () => {
+  button.addEventListener("click", () => {
     const productId = button.dataset.productId;
-   let matchingItem;
+    let matchingItem;
     cart.forEach((item) => {
-      if(productId === item.productid){
+      if (productId === item.productid) {
         matchingItem = item;
       }
-    })
-    if(matchingItem){
-      matchingItem.quantity += 1;
-    }
-    else{
-          cart.push({
-      productid: productId,
-      quantity: 1
     });
+    if (matchingItem) {
+      matchingItem.quantity += 1;
+    } else {
+      cart.push({
+        productid: productId,
+        quantity: 1,
+      });
     }
-   
-    console.log(cart)
-  }
-)
-})
+  });
+});
