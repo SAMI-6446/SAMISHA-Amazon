@@ -1,6 +1,6 @@
-import { cart } from "../data/cart.js";
+import { cart, removeCartItem } from "../data/cart.js";
 import { products } from "../data/products.js";
-import { formatCurrency } from "./utils/money.js"
+import { formatCurrency } from "./utils/money.js";
 let cartsummeryHtml = '';
 
 cart.forEach((CartItem) => {
@@ -105,12 +105,12 @@ cart.forEach((CartItem) => {
 
 document.querySelector('.js-order-summary').innerHTML = cartsummeryHtml;
 
-// document.querySelectorAll('.js-delet-link').forEach((link) => {
-//   link.addEventListener('click', () => {
+document.querySelectorAll('.js-delet-link').forEach((link) => {
+  link.addEventListener('click', () => {
   
-//     let productId = link.dataset.productId;
-//     removeCartItem(productId);
-//     let container = document.querySelector(`.js-cart-item-container-${productId}`);
-//     container.remove();
-//   });
-// });
+    let productId = link.dataset.productId;
+    removeCartItem(productId);
+    let container = document.querySelector(`.js-cart-item-container-${productId}`);
+    container.remove();
+  });
+});
