@@ -51,3 +51,29 @@ saveCartLocal();
  function saveCartLocal(){
   localStorage.setItem('cart', JSON.stringify(cart));
 }
+
+
+
+
+
+
+
+{/* <script>
+  // Example: Set a dynamic delivery date (e.g., 5 days from now)
+  function getDeliveryDate(daysToAdd = 5) {
+    const date = new Date();
+    date.setDate(date.getDate() + daysToAdd);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+  }
+
+  // Example usage: update delivery date in cart items
+  document.addEventListener('DOMContentLoaded', () => {
+    // Find all elements where you want to show the delivery date
+    // For demo, let's assume you have a span with class 'delivery-date' in each cart item
+    const deliveryDateElements = document.querySelectorAll('.delivery-date');
+    deliveryDateElements.forEach(el => {
+      el.textContent = getDeliveryDate();
+    });
+  });
+</script> */}

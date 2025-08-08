@@ -114,3 +114,6 @@ document.querySelectorAll('.js-delet-link').forEach((link) => {
     container.remove();
   });
 });
+let today = dayjs();
+let deliveryDate = today.add('7', 'days');
+console.log(deliveryDate.format('dddd, MMMM d'));
