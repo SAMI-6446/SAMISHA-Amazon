@@ -3,8 +3,9 @@ import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import { deliveryOptions } from "../data/delivery options.js";
 
-let cartsummeryHtml = "";
 
+function renderOrderSummary(){
+let cartsummeryHtml = "";
 function generateCart() {
   cart.forEach((CartItem) => {
     let productId = CartItem.productid;
@@ -64,7 +65,7 @@ function generateCart() {
           <div class="delivery-options-title">
             Choose a delivery option:
           </div>
-          ${delivery(matchingproduct, CartItem)}
+          ${generateDeliveryOption(matchingproduct, CartItem)}
       </div> 
      </div>
     </div>`;
@@ -72,8 +73,8 @@ function generateCart() {
   // the end of gererate html of cart
 }
 generateCart();
-// generate html for cart item delivery options
-function delivery(matchingproduct, CartItem) {
+          // generate html for cart item delivery options
+function generateDeliveryOption(matchingproduct, CartItem) {
   let html = "";
   deliveryOptions.forEach((options) => {
     const today = dayjs();
@@ -112,7 +113,7 @@ function delivery(matchingproduct, CartItem) {
   return html;
 }
 document.querySelector(".js-order-summary").innerHTML = cartsummeryHtml;
-// the end of generate html of delivery options
+            // the end of generate html of delivery options
 
 function deletlisner() {
   document.querySelectorAll(".js-delet-link").forEach((link) => {
@@ -127,10 +128,17 @@ function deletlisner() {
   });
 }
 deletlisner();
-document.querySelectorAll('.js-delivery-option').forEach((element) => {
-  element.addEventListener('click', () => {
-    const productId = element.dataset.productId;
-    const deliveryOptionsId = element.dataset.deliveryOptionsId || element.dataset['delivery-options-id'];
-    updateDeliveryOptions(productId, deliveryOptionsId);
-  });
-});
+function deliveryLisner(){
+      document.querySelectorAll('.js-delivery-option')
+      .forEach((element) => {
+        element.addEventListener('click', () => {
+          const productId = element.dataset.productId;
+          const deliveryOptionsId = element.dataset.deliveryOptionsId || element.dataset['delivery-options-id'];
+          updateDeliveryOptions(productId, deliveryOptionsId);
+          renderOrderSummary();
+        });
+      });
+}
+deliveryLisner();
+}
+renderOrderSummary();
