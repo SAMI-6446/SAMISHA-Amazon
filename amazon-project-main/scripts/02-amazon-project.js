@@ -12,17 +12,14 @@ let producthtml = "";
 products.forEach((product) => {
   producthtml += `
    <div class="product-container">
-  <div class="product-delivery-date">
-    Delivery: 
-    ${new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString()}
-  </div>
+  <div class="product-name limit-text-to-2-lines">
+              ${product.name}
+            </div>
             <div class="product-image-container">
              <img src="${product.image}" alt="" class="product-image">
             </div>
 
-            <div class="product-name limit-text-to-2-lines">
-              ${product.name}
-            </div>
+            
 
             <div class="product-rating-container">
               <img src="${
