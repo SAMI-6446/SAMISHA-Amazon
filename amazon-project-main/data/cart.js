@@ -56,7 +56,17 @@ saveCartLocal();
 export function saveCartLocal(){
   localStorage.setItem('cart', JSON.stringify(cart));
 }
-
+export function updateDeliveryOptions(productId, deliveryOptionsId){
+    let matchingItem;
+       cart.forEach((cartItem) => {
+      if (productId === cartItem.productid)
+        {
+           matchingItem = cartItem;
+        }
+      });
+  matchingItem.deliveryOptions = deliveryOptionsId;
+  saveCartLocal();
+}
 
 
 
