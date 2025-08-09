@@ -1,46 +1,37 @@
-import { cart, removeCartItem } from "../data/cart.js";
+import { cart, removeCartItem, saveCartLocal } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import { deliveryOptions } from "../data/delivery options.js";
 
 
-
-
 let cartsummeryHtml = '';
 
-function generateCart(){
-cart.forEach((CartItem) => {
-  let productId = CartItem.productid;
-  let matchingproduct;
-  // maching product to add in cart list
-  products.forEach((product) => {
-       if (product.id === productId) {
-        matchingproduct = product;
-       } 
-  });
-
-function deleverDateSelect(){
-   // Add event listener for delivery option change
-  setTimeout(() => {
-    document.querySelectorAll(`input[name="delivery-option-${matchingproduct.id}"]`).forEach((input, idx) => {
-      input.addEventListener('change', () => {
-        const selectedOption = deliveryOptions[idx];
-        const today = dayjs();
-        const delverDate = today.add(selectedOption.deliverydate, 'days');
-        const dateString = delverDate.format('dddd, MMMM D');
-        const deliveryDateElem = document.querySelector(`.js-cart-item-container-${matchingproduct.id} .delivery-date`);
-        if (deliveryDateElem) {
-          deliveryDateElem.textContent = `Delivery date: ${dateString}`;
+ function generateCart(){
+            cart.forEach((CartItem) => {
+              let productId = CartItem.productid;
+              let matchingproduct;
+              // maching product to add in cart list
+              products.forEach((product) => {
+                  if (product.id === productId) {
+                    matchingproduct = product;
+                  } 
+              });
+      const deliveryOptionsId = CartItem.deliveryOptions;
+      let deliverOption;
+      deliveryOptions.forEach((option) => {
+        if(option.id === deliveryOptionsId){
+          deliverOption = option;
         }
       });
-    });
-  }, 0);
-}
-  deleverDateSelect();
+      const today = dayjs();
+      const delverDate = today.add(deliverOption.deliverydate, 'days');
+      const dateString = delverDate.format('dddd, MMMM D');
+
   // generate cart item html
   cartsummeryHtml +=` 
     <div class="cart-item-container js-cart-item-container-${productId}">
       <div class="delivery-date">
+      Delivery date: ${dateString}
       </div>
       <div class="cart-item-details-grid">
         <img class="product-image"
@@ -79,20 +70,22 @@ function deleverDateSelect(){
 
 }
 generateCart();
-
 // generate html for cart item delivery options
-function delivery(matchingproduct){
-  let html = '';
-deliveryOptions.forEach((options) => {
-  const today = dayjs();
-  const delverDate = today.add(options.deliverydate, 'days');
-  const dateString = delverDate.format('dddd, MMMM D');
-  const priceString = options.pricecent === 0 ? 'FREE' : `$${formatCurrency(options.pricecent)} -`;
- html += `
+function delivery(matchingproduct,CartItem){
+        let html = '';
+      deliveryOptions.forEach((options) => {
+        const today = dayjs();
+        const delverDate = today.add(options.deliverydate, 'days');
+        const dateString = delverDate.format('dddd, MMMM D');
+        const priceString = options.pricecent === 0 ? 'FREE' : `$${formatCurrency(options.pricecent)} -`;
+        const isChecked = options.id === CartItem.deliveryOptions;
+      
+      html += `
    
           
           <div class="delivery-option">
             <input type="radio" 
+              ${isChecked ? 'checked' : ''}
               class="delivery-option-input"
               name="delivery-option-${matchingproduct.id}">
              
@@ -113,14 +106,14 @@ document.querySelector('.js-order-summary').innerHTML = cartsummeryHtml;
 // the end of generate html of delivery options
 
 function deletlisner(){
-document.querySelectorAll('.js-delet-link').forEach((link) => {
-  link.addEventListener('click', () => {
+              document.querySelectorAll('.js-delet-link').forEach((link) => {
+                link.addEventListener('click', () => {
 
-    let productId = link.dataset.productId;
-    removeCartItem(productId);
-    let container = document.querySelector(`.js-cart-item-container-${productId}`);
-    container.remove();
-  });
-});
-}
+                  let productId = link.dataset.productId;
+                  removeCartItem(productId);
+                  let container = document.querySelector(`.js-cart-item-container-${productId}`);
+                  container.remove();
+                });
+              });
+          }
 deletlisner();
