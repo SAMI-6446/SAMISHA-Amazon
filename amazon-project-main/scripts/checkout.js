@@ -1,3 +1,5 @@
 import { renderOrderSummary } from './checkout/order-summery.js';
-renderOrderSummary();
+import { renderPaymentSummary } from './checkout/paymentSummery.js';
 
+renderOrderSummary();
+renderPaymentSummary();
