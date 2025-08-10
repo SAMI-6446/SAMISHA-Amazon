@@ -2,6 +2,7 @@ import { cart, removeCartItem, updateDeliveryOptions } from "../../data/cart.js"
 import { getProduct, products } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import { deliveryOptions, getDeliveryOption } from "../../data/delivery options.js";
+import { renderPaymentSummary } from "./paymentSummery.js";
 
 
 export function renderOrderSummary(){
@@ -112,6 +113,7 @@ function deletlisner() {
     link.addEventListener("click", () => {
       let productId = link.dataset.productId;
       removeCartItem(productId);
+      renderPaymentSummary();
       let container = document.querySelector(
         `.js-cart-item-container-${productId}`
       );
@@ -128,6 +130,7 @@ function deliveryLisner(){
           const deliveryOptionsId = element.dataset.deliveryOptionsId || element.dataset['delivery-options-id'];
           updateDeliveryOptions(productId, deliveryOptionsId);
           renderOrderSummary();
+          renderPaymentSummary();
         });
       });
 }
