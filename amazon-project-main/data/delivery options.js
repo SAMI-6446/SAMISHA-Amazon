@@ -25,6 +25,5 @@ deliveryOptions.forEach ((option) =>
   
 }
 );
-console.log(deliveryOption || deliveryOptions[1])
 return deliveryOption || deliveryOptions[0];
 }

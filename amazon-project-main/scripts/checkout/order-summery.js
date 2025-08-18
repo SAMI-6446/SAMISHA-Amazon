@@ -1,10 +1,10 @@
-import { cart, removeCartItem, updateDeliveryOptions } from "../../data/cart.js";
+import { cart, removeCartItem, updateDeliveryOptions, loadFromStorage } from "../../data/cart.js";
 import { getProduct, products } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import { deliveryOptions, getDeliveryOption } from "../../data/delivery options.js";
 import { renderPaymentSummary } from "./paymentSummery.js";
 
-
+loadFromStorage();
 export function renderOrderSummary(){
 let cartsummeryHtml = "";
 function generateCart() {
@@ -15,7 +15,6 @@ function generateCart() {
     const deliveryOptionsId = CartItem.deliveryOptions;
     const deliverOption = getDeliveryOption(deliveryOptionsId);
 
-console.log( deliveryOptionsId)
     const today = dayjs();
     const deliveryDate = today.add(deliverOption.deliverydate, 'days');
    const dateString = deliveryDate.format('dddd, MMMM D');
