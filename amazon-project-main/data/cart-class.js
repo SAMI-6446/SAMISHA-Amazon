@@ -109,17 +109,6 @@ localStorageKey = undefined;
     }
   
 }
-
-
-
-function Cart(localStorageKey){
-const cart = {
-  
-
-  
- 
- 
-  
-}
-}
-cart.loadFromStorage();
+const cart = new Cart();
+cart.loadFromStorageKey = 'cart-oop';
+console.log(cart);
