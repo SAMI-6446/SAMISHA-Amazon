@@ -35,7 +35,7 @@ function generateCart() {
             ${matchingproduct.name}
           </div>
           <div class="product-price">
-            ${formatCurrency(matchingproduct.priceCents)}
+          ${matchingproduct.getPrice()}
           </div>
           <div class="product-quantity">
             <span>
