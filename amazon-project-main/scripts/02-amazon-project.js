@@ -1,22 +1,13 @@
-    import {
-      cart,
-      addtoCart,
-      cartQuntity,
-      loadFromStorage
-    } from "../data/cart.js";
-    import {
-      products, loadProducts
-    } from "../data/products.js";
-    import { formatCurrency } from "./utils/money.js";
-    loadProducts(generateHtml);
+    import { cart, addtoCart, cartQuntity, loadFromStorage } from "../data/cart.js";
+    import { products} from "../data/products.js";    
     loadFromStorage();
-    function generateHtml(){
-    let producthtml = "";
-    products.forEach((product) => {
-      producthtml += `
-      <div class="product-container">
-      <div class="product-name limit-text-to-2-lines">
-              ${product.name}
+    function generateHtml() {
+      let producthtml = "";
+      products.forEach((product) => {
+        producthtml += `
+          <div class="product-container">
+          <div class="product-name limit-text-to-2-lines">
+                  ${product.name}
             </div>
             <div class="product-image-container">
              <img src="${product.image}" alt="" class="product-image">
@@ -63,16 +54,19 @@
             </button>
           </div>
      `;
+  });
+  document.querySelector(".js-product-grid").innerHTML = producthtml;
+
+  const addCartbtn = document.querySelectorAll(".add-to-cart-button");
+
+  addCartbtn.forEach((button) => {
+    button.addEventListener("click", () => {
+      const productId = button.dataset.productId;
+      addtoCart(productId);
+      cartQuntity();
     });
-    document.querySelector(".js-product-grid").innerHTML = producthtml;
-
-      const addCartbtn = document.querySelectorAll(".add-to-cart-button");
-
-      addCartbtn.forEach((button) => {
-        button.addEventListener("click", () => {
-          const productId = button.dataset.productId;
-          addtoCart(productId);
-          cartQuntity();
-        });
-      });
-      }
+  });
+}
+  cartQuntity();
+  generateHtml();
+console.log('samigo')

@@ -10,8 +10,8 @@
             return matchingproduct;
       }
 
-    class Product 
-  {
+class Product 
+   {
       id;
       image;
       name;
@@ -52,23 +52,7 @@
       `
      }
   }
-  export let products = [];
-  export  function loadProducts(fun){
-    const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', () => {
-  products = JSON.parse(xhr.response).map((productDtails) => {
-    if(productDtails.type === 'clothing'){
-         return new Clothing(productDtails);
-    }
-        return new Product(productDtails);
-      });
-      fun();
-    });
-    xhr.open('GET', 'https://supersimplebackend.dev');
-    xhr.send();
-  }
   
-/*
   export const products = 
     [ 
         {
@@ -735,4 +719,3 @@
     }
         return new Product(productDtails);
       });
-*/
