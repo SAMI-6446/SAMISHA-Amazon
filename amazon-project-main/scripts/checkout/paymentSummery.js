@@ -1,37 +1,35 @@
-    import { cart, loadFromStorage} from "../../data/cart.js";
-    import { getProduct } from "../../data/products.js";
-    import { formatCurrency } from "../utils/money.js";
-    import { getDeliveryOption } from "../../data/delivery-options.js";
-    import { addOrder } from "../../data/order.js";
-    loadFromStorage();
+import { cart, loadFromStorage} from "../../data/cart.js";
+import { getProduct } from "../../data/products.js";
+import { formatCurrency } from "../utils/money.js";
+import { getDeliveryOption } from "../../data/delivery-options.js";
+import { addOrder } from "../../data/order.js";
+loadFromStorage();
   export function renderPaymentSummary(){
-      let productPriceCents = 0;
-      let shippingPriceCents = 0;
-      cart.forEach((cartItem) => {
-        const product = getProduct(cartItem.productid);
+  let productPriceCents = 0;
+  let shippingPriceCents = 0;
+  cart.forEach((cartItem) => {
+    const product = getProduct(cartItem.productid);
 
-        if (!product) {
+    if (!product) {
           console.error('renderPaymentSummary: product not found for id', cartItem.productid, cartItem);
-          return; // skip this cart item to avoid exceptions
-        }
+      return; // skip this cart item to avoid exceptions
+    }
 
-        productPriceCents += (product.priceCents || 0) * (cartItem.quantity || 0);
+    productPriceCents += (product.priceCents || 0) * (cartItem.quantity || 0);
 
-        // Calculate shipping price based on delivery options
-        const deliverOption = getDeliveryOption(cartItem.deliveryOptions);
-        if (!deliverOption) {
+    // Calculate shipping price based on delivery options
+    const deliverOption = getDeliveryOption(cartItem.deliveryOptions);
+    if (!deliverOption) {
           console.error('renderPaymentSummary: delivery option not found for id', cartItem.deliveryOptions, cartItem);
-        }
+    }
 
-        // defensive: ensure we add a number
-        shippingPriceCents += Number(deliverOption?.pricecent || 0);
-      });
-    const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
-    // console.log(totalBeforeTaxCents)
-    const taxCents = totalBeforeTaxCents * 0.1;
-    const totalCents = totalBeforeTaxCents + taxCents;
-
-    const PaymentSummeryHtml = `
+    // defensive: ensure we add a number
+    shippingPriceCents += Number(deliverOption?.pricecent || 0);
+  });
+  const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
+  const taxCents = totalBeforeTaxCents * 0.1;
+  const totalCents = totalBeforeTaxCents + taxCents;
+  const PaymentSummeryHtml = `
         <div class="payment-summary-title">
                 Order Summary
               </div>
@@ -76,18 +74,21 @@
               </button>
               
     `;
-    document.querySelector('.js-payment-summery').innerHTML = PaymentSummeryHtml;
+  document.querySelector(".js-payment-summery").innerHTML = PaymentSummeryHtml;
+  const paymentButn = document.querySelector(".js-place-order");
+  if (paymentButn) {
+    paymentButn.addEventListener("click", () => {
+      if(!cart){
+         console.log('there is no cart')
+      } else{
+         addOrder();
+      }
+      
 
-     
-
-    const paymentButn = document.querySelector('.js-place-order');
-    if (paymentButn) {
-      paymentButn.addEventListener('click', () => {
-        addOrder();
-        console.log('addOrder called');
-      });
-    } else {
-      console.error('renderPaymentSummary: .js-place-order button not found in DOM');
-    }
-    
-    }
+    });
+  } else {
+    console.error(
+      "renderPaymentSummary: .js-place-order button not found in DOM"
+    );
+  }
+}

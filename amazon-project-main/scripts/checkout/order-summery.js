@@ -1,4 +1,4 @@
-  import { cart, removeCartItem, updateDeliveryOptions, loadFromStorage } from "../../data/cart.js";
+  import { cart, removeCartItem, updateDeliveryOptions, loadFromStorage, cartQuntity } from "../../data/cart.js";
   import { getProduct, products } from "../../data/products.js";
   import { formatCurrency } from "../utils/money.js";
   import { deliveryOptions, getDeliveryOption } from "../../data/delivery-options.js";
@@ -10,7 +10,6 @@
   function generateCart() {
     cart.forEach((CartItem) => {
       const productId = CartItem.productid;
-
       const matchingproduct = getProduct(productId);
       const deliveryOptionsId = CartItem.deliveryOptions;
       const deliverOption = getDeliveryOption(deliveryOptionsId);
@@ -112,11 +111,13 @@
       link.addEventListener("click", () => {
         let productId = link.dataset.productId;
         removeCartItem(productId);
+        
         renderPaymentSummary();
         let container = document.querySelector(
           `.js-cart-item-container-${productId}`
         );
         container.remove();
+        renderOrderSummary();
       });
     });
   }
@@ -134,4 +135,6 @@
         });
   }
   deliveryLisner();
+    cartQuntity()
   }
+
