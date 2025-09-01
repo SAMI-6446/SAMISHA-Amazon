@@ -1,10 +1,10 @@
-    import { cart, addtoCart, cartQuntity, loadFromStorage } from "../data/cart.js";
-    import { products} from "../data/products.js";    
-    loadFromStorage();
-    function generateHtml() {
-      let producthtml = "";
-      products.forEach((product) => {
-        producthtml += `
+import { cart, addtoCart, cartQuntity, loadFromStorage } from "../data/cart.js";
+import { products } from "../data/products.js";
+loadFromStorage();
+function generateHtml() {
+  let producthtml = "";
+  products.forEach((product) => {
+    producthtml += `
           <div class="product-container">
           <div class="product-name limit-text-to-2-lines">
                   ${product.name}
@@ -62,11 +62,17 @@
   addCartbtn.forEach((button) => {
     button.addEventListener("click", () => {
       const productId = button.dataset.productId;
-      addtoCart(productId);
-      cartQuntity();
+      if (cart) {
+        addtoCart(productId);
+        cartQuntity();
+      } else {
+        return;
+      }
     });
   });
 }
+if (cart) {
   cartQuntity();
-  generateHtml();
-console.log('samigo')
+}
+generateHtml();
+console.log("samigo");

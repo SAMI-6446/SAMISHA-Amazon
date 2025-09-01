@@ -1,11 +1,20 @@
-  import { cart, removeCartItem, updateDeliveryOptions, loadFromStorage, cartQuntity } from "../../data/cart.js";
-  import { getProduct, products } from "../../data/products.js";
-  import { formatCurrency } from "../utils/money.js";
-  import { deliveryOptions, getDeliveryOption } from "../../data/delivery-options.js";
-  import { renderPaymentSummary } from "./paymentSummery.js";
+import {
+  cart,
+  removeCartItem,
+  updateDeliveryOptions,
+  loadFromStorage,
+  cartQuntity,
+} from "../../data/cart.js";
+import { getProduct } from "../../data/products.js";
+import { formatCurrency } from "../utils/money.js";
+import {
+  deliveryOptions,
+  getDeliveryOption,
+} from "../../data/delivery-options.js";
+import { renderPaymentSummary } from "./paymentSummery.js";
 
-  loadFromStorage();
-  export function renderOrderSummary(){
+loadFromStorage();
+export function renderOrderSummary() {
   let cartsummeryHtml = "";
   function generateCart() {
     cart.forEach((CartItem) => {
@@ -15,9 +24,9 @@
       const deliverOption = getDeliveryOption(deliveryOptionsId);
 
       const today = dayjs();
-      const deliveryDate = today.add(deliverOption.deliverydate, 'days');
-    const dateString = deliveryDate.format('dddd, MMMM D');
-      
+      const deliveryDate = today.add(deliverOption.deliverydate, "days");
+      const dateString = deliveryDate.format("dddd, MMMM D");
+
       // generate cart item html
       cartsummeryHtml += ` 
       <div class="cart-item-container js-cart-item-container-${productId}"
@@ -63,8 +72,10 @@
     });
     // the end of gererate html of cart
   }
-  generateCart();
-            // generate html for cart item delivery options
+  if (cart) {
+    generateCart();
+  }
+  // generate html for cart item delivery options
   function generateDeliveryOption(matchingproduct, CartItem) {
     let html = "";
     deliveryOptions.forEach((options) => {
@@ -76,8 +87,8 @@
           ? "FREE"
           : `$${formatCurrency(options.pricecent)} -`;
       const isChecked = options.id === CartItem.deliveryOptions;
-  // data-product-id="${matchingproduct.id}"
-            // data-deliveryOptions-id="${options.id}"
+      // data-product-id="${matchingproduct.id}"
+      // data-deliveryOptions-id="${options.id}"
       html += `
     
             
@@ -104,14 +115,14 @@
     return html;
   }
   document.querySelector(".js-order-summary").innerHTML = cartsummeryHtml;
-              // the end of generate html of delivery options
+  // the end of generate html of delivery options
 
   function deletlisner() {
     document.querySelectorAll(".js-delet-link").forEach((link) => {
       link.addEventListener("click", () => {
         let productId = link.dataset.productId;
         removeCartItem(productId);
-        
+
         renderPaymentSummary();
         let container = document.querySelector(
           `.js-cart-item-container-${productId}`
@@ -122,19 +133,21 @@
     });
   }
   deletlisner();
-  function deliveryLisner(){
-        document.querySelectorAll('.js-delivery-option')
-        .forEach((element) => {
-          element.addEventListener('click', () => {
-            const productId = element.dataset.productId;
-            const deliveryOptionsId = element.dataset.deliveryOptionsId || element.dataset['delivery-options-id'];
-            updateDeliveryOptions(productId, deliveryOptionsId);
-            renderOrderSummary();
-            renderPaymentSummary();
-          });
-        });
+  function deliveryLisner() {
+    document.querySelectorAll(".js-delivery-option").forEach((element) => {
+      element.addEventListener("click", () => {
+        const productId = element.dataset.productId;
+        const deliveryOptionsId =
+          element.dataset.deliveryOptionsId ||
+          element.dataset["delivery-options-id"];
+        updateDeliveryOptions(productId, deliveryOptionsId);
+        renderOrderSummary();
+        renderPaymentSummary();
+      });
+    });
   }
   deliveryLisner();
-    cartQuntity()
+  if (cart) {
+    cartQuntity();
   }
-
+}
