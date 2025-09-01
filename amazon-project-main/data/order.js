@@ -23,7 +23,7 @@
             const matchingproduct = getProduct(ProductId);
             orderHtmlStr += `
                     <div class="product-image-container">
-                    <img src="${matchingproduct.image}">
+                <img src="${product.image || ''}" alt="${product.name || ''}">
                     </div>
 
                     <div class="product-details">
