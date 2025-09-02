@@ -129,7 +129,21 @@
 .product-spacer {
   flex: 1;
 }
-
+ .quantity-input{
+  width: 60px;
+  border: 1px rgb(243, 239, 12) solid;
+  border-radius: 5px;
+ }
+ .quantity-input::placeholder{
+  font-size: smaller;
+ }
+ #error{
+  display: none;
+  color: red;
+  font-size: 10px;
+  position: relative;
+  left: 10px;
+ }
 .added-to-cart {
   color: rgb(6, 125, 98);
   font-size: 16px;

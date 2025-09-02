@@ -25,17 +25,8 @@
             </div>
 
             <div class="product-quantity-container">
-              <select>
-                <option selected value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-              </select>
+              <input max="99999" min="1" class="quantity-input" type="number" placeholder="Quantity">
+              <p id="error">invalid value</p>
             </div>
               ${product.extraInfoHTML()}
             <div class="product-spacer">
@@ -62,12 +53,25 @@
   addCartbtn.forEach((button) => {
     button.addEventListener("click", () => {
       const productId = button.dataset.productId;
-      if (cart) {
-        addtoCart(productId);
-        cartQuntity();
-      } else {
-        return;
+      if (!cart) return;
+      // find the quantity select within the same product container
+      const productContainer = button.closest('.product-container');
+      let qty = 1;
+      if (productContainer) {
+        const select = productContainer.querySelector('.quantity-input');
+        const errorMess = productContainer.querySelector('#error');
+        if (select) {
+          if(select.value >= 1 && select.value <= 99999 ){
+          qty = Number(select.value) || 1;
+          } 
+          else if ((select.value <= 1 || select.value >= 99999) && select.value) { 
+           errorMess.style.display="block"; 
+          }
+        }
+        select.value = "";
       }
+      addtoCart(productId, qty);
+      cartQuntity();
     });
   });
   }

@@ -16,7 +16,9 @@ export function loadFromStorage() {
 
 loadFromStorage();
 
-export function addtoCart(productId) {
+export function addtoCart(productId, quantity = 1) {
+  let qty = Math.floor(Number(quantity)) || 1;
+
   let matchingItem;
 
   cart.forEach((cartItem) => {
@@ -26,11 +28,11 @@ export function addtoCart(productId) {
   });
 
   if (matchingItem) {
-    matchingItem.quantity += 1;
+    matchingItem.quantity = (matchingItem.quantity || 0) + qty;
   } else {
     cart.push({
       productid: productId,
-      quantity: 1,
+      quantity: qty,
       deliveryOptions: "1",
     });
   }
