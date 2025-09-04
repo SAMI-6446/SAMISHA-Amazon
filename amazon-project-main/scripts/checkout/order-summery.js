@@ -114,7 +114,10 @@ export function renderOrderSummary() {
 
     return html;
   }
-  document.querySelector(".js-order-summary").innerHTML = cartsummeryHtml;
+  const container = document.querySelector(".js-order-summary");
+  if (!container) return;
+
+  container.innerHTML = cartsummeryHtml;
   // the end of generate html of delivery options
 
   function deletlisner() {
@@ -132,21 +135,46 @@ export function renderOrderSummary() {
       });
     });
   }
-  deletlisner();
-  function deliveryLisner() {
-    document.querySelectorAll(".js-delivery-option").forEach((element) => {
-      element.addEventListener("click", () => {
-        const productId = element.dataset.productId;
-        const deliveryOptionsId =
-          element.dataset.deliveryOptionsId ||
-          element.dataset["delivery-options-id"];
-        updateDeliveryOptions(productId, deliveryOptionsId);
-        renderOrderSummary();
-        renderPaymentSummary();
-      });
+  // If there are no items in the cart, show a small inline message and skip listeners
+  if (!cart || cart.length === 0) {
+    let msgHTML = `
+       <div class="js-order-empty-notify">
+               <button class="notify-dismiss" aria-label="Dismiss">×</button>
+
+       <div class="message">Your cart is empty. Add products from the store to see them here.</div>
+       <div class="actions">
+        <button class="button-primary">Go to store</button>
+       </div>
+       </div>
+    `;
+    container.innerHTML = msgHTML;
+    const goBtn = document.querySelector(".button-primary");
+    const closeBtn = document.querySelector(".notify-dismiss");
+    const notify = document.querySelector(".js-order-empty-notify");
+    goBtn.addEventListener("click", () => {
+      // navigate back to product listing
+      window.location.href = "amazon.html";
     });
+    closeBtn.addEventListener("click", () => {
+      notify.remove();
+    });
+  } else {
+    deletlisner();
+    function deliveryLisner() {
+      document.querySelectorAll(".js-delivery-option").forEach((element) => {
+        element.addEventListener("click", () => {
+          const productId = element.dataset.productId;
+          const deliveryOptionsId =
+            element.dataset.deliveryOptionsId ||
+            element.dataset["delivery-options-id"];
+          updateDeliveryOptions(productId, deliveryOptionsId);
+          renderOrderSummary();
+          renderPaymentSummary();
+        });
+      });
+    }
+    deliveryLisner();
   }
-  deliveryLisner();
   if (cart) {
     cartQuntity();
   }
