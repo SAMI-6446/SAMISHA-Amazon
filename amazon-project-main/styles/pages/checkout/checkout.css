@@ -199,7 +199,17 @@
   border-top: 1px solid rgb(222, 222, 222);
   padding-top: 18px;
 }
-
+.js-cart-empty-notify {
+  background-color: #fcebebf8;
+  color: rgb(243, 10, 10);
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: small;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
 .place-order-button {
   width: 100%;
   padding-top: 12px;

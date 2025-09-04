@@ -1,7 +1,7 @@
-  import { cart, addtoCart, cartQuntity, loadFromStorage } from "../data/cart.js";
-  import { products } from "../data/products.js";
-  loadFromStorage();
-  function generateHtml() {
+import { cart, addtoCart, cartQuntity, loadFromStorage } from "../data/cart.js";
+import { products } from "../data/products.js";
+loadFromStorage();
+function generateHtml() {
   let producthtml = "";
   products.forEach((product) => {
     producthtml += `
@@ -55,17 +55,19 @@
       const productId = button.dataset.productId;
       if (!cart) return;
       // find the quantity select within the same product container
-      const productContainer = button.closest('.product-container');
+      const productContainer = button.closest(".product-container");
       let qty = 1;
       if (productContainer) {
-        const select = productContainer.querySelector('.quantity-input');
-        const errorMess = productContainer.querySelector('#error');
+        const select = productContainer.querySelector(".quantity-input");
+        const errorMess = productContainer.querySelector("#error");
         if (select) {
-          if(select.value >= 1 && select.value <= 99999 ){
-          qty = Number(select.value) || 1;
-          } 
-          else if ((select.value <= 1 || select.value >= 99999) && select.value) { 
-           errorMess.style.display="block"; 
+          if (select.value >= 1 && select.value <= 101) {
+            qty = Number(select.value) || 1;
+          } else if (
+            (select.value <= 1 || select.value >= 101) &&
+            select.value
+          ) {
+            errorMess.style.display = "block";
           }
         }
         select.value = "";
@@ -74,13 +76,13 @@
       cartQuntity();
     });
   });
-  }
-  if (cart) {
-    cartQuntity();
-  }
-  generateHtml();
+}
+if (cart) {
+  cartQuntity();
+}
+generateHtml();
 
- // --- Search / highlight functionality ---
+// --- Search / highlight functionality ---
 function searchProduct() {
   // PreviousHighlight function
   function clearPreviousHighlight() {
