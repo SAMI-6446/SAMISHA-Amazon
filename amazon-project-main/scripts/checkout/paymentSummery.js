@@ -79,19 +79,53 @@ export function renderPaymentSummary() {
       <div>Order total:</div>
       <div class="payment-summary-money">${formatCurrency(totalCents)}</div>
     </div>
-
+    <div class="js-notify"></div>
     <button class="place-order-button button-primary js-place-order">Place your order</button>
   `;
 
   container.innerHTML = PaymentSummeryHtml;
 
   const paymentBtn = container.querySelector(".js-place-order");
+  const messSpace = container.querySelector(".js-notify");
+  let notifyTimeoutId = null;
 
-  function showNotify(message) {
-    const notify = document.createElement("div");
-    notify.className = "js-cart-empty-notify";
-    notify.textContent = message;
-    paymentBtn.parentNode.insertBefore(notify, paymentBtn);
+  function showNotify() {
+    if (!messSpace) return;
+
+    // If a notify already exists, remove it and clear previous timeout
+    const existing = messSpace.querySelector('.js-cart-empty-notify');
+    if (existing) {
+      existing.remove();
+    }
+    if (notifyTimeoutId) {
+      clearTimeout(notifyTimeoutId);
+      notifyTimeoutId = null;
+    }
+
+    const notify = document.createElement('div');
+    notify.className = 'js-cart-empty-notify';
+
+    const btn = document.createElement('button');
+    btn.className = 'notify-dismiss';
+    btn.setAttribute('aria-label', 'Dismiss notification');
+    btn.textContent = '×';
+    btn.addEventListener('click', () => {
+      if (notify.parentNode) notify.parentNode.removeChild(notify);
+      if (notifyTimeoutId) { clearTimeout(notifyTimeoutId); notifyTimeoutId = null; }
+    });
+
+    const text = document.createElement('div');
+    text.textContent = 'Your cart is empty. Please add products before placing your order.';
+
+    notify.appendChild(btn);
+    notify.appendChild(text);
+    messSpace.appendChild(notify);
+
+    // Auto-hide after 4 seconds
+    notifyTimeoutId = setTimeout(() => {
+      if (notify.parentNode) notify.parentNode.removeChild(notify);
+      notifyTimeoutId = null;
+    }, 4000);
   }
 
   paymentBtn.addEventListener("click", () => {
@@ -101,9 +135,8 @@ export function renderPaymentSummary() {
       ? Number((itemsRow.textContent || "").match(/Items \((\d+)\)/)?.[1] || 0)
       : 0;
     if ((cart || []).length === 0 || renderedCount === 0) {
-      showNotify(
-        "Your cart is empty. Please add products before placing your order."
-      );
+      showNotify();
+       
       return;
     }
     // remove notify if present then place order
