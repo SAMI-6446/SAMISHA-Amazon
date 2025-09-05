@@ -21,6 +21,19 @@ import { getProduct } from "./products.js";
   function saveLocal() {
     localStorage.setItem("order", JSON.stringify(order));
   }
+  
+  // helper to detect the initial default placeholder order
+  function isDefaultOrder(entry) {
+    if (!Array.isArray(entry)) return false;
+    if (entry.length < 1) return false;
+    const ids = entry.map((it) => it && it.productid).filter(Boolean);
+    const defaults = new Set([
+      "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+      "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+    ]);
+    // return true when every id in entry is one of the default ids
+    return ids.every((id) => defaults.has(id));
+  }
   function orderHtml() {
     let ordersGrid = "";
   // loop through each order container
@@ -139,6 +152,13 @@ import { getProduct } from "./products.js";
     container.innerHTML = ordersGrid;
   }
   export function addOrder() {
+    // remove any placeholder/default orders before adding a real order
+    try {
+      order = order.filter((entry) => !isDefaultOrder(entry));
+    } catch (e) {
+      // ignore and proceed
+      console.warn("addOrder: failed to strip default order", e);
+    }
     order.unshift(cart);
     saveLocal();
     window.location.href = "orders.html";
@@ -146,5 +166,6 @@ import { getProduct } from "./products.js";
   document.addEventListener("DOMContentLoaded", () => {
     orderHtml();
   });
-  document.querySelector('.cart-quantity').textContent = order.length;
+  const qtyEl = document.querySelector('.cart-quantity');
+  if (qtyEl) qtyEl.textContent = order.length;
   
