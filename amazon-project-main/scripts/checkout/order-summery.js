@@ -51,7 +51,7 @@ export function renderOrderSummary() {
                 ${CartItem.quantity}
                 </span>
               </span>
-              <span class="update-quantity-link link-primary">
+              <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchingproduct.id}">
                 Update
               </span>
               <span class="delete-quantity-link link-primary js-delet-link" data-product-id="${
@@ -160,6 +160,28 @@ export function renderOrderSummary() {
     });
   } else {
     deletlisner();
+    // attach update listeners so user can jump back to product page and edit
+    function updateLisner() {
+      document.querySelectorAll(".js-update-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          const productId = link.dataset.productId;
+          // find the cart item to prefill data on product page
+          const item = cart.find((c) => String(c.productid) === String(productId));
+          const quantity = item ? Number(item.quantity) || 1 : 1;
+          try {
+            sessionStorage.setItem(
+              "editProduct",
+              JSON.stringify({ productId, quantity })
+            );
+          } catch (e) {
+            console.error("order-summery: failed to set editProduct", e);
+          }
+          // navigate to store where product listing will restore the edit
+          window.location.href = "amazon.html";
+        });
+      });
+    }
+    updateLisner();
     function deliveryLisner() {
       document.querySelectorAll(".js-delivery-option").forEach((element) => {
         element.addEventListener("click", () => {

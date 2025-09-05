@@ -82,6 +82,43 @@ if (cart) {
 }
 generateHtml();
 
+// If user clicked Update from checkout, restore edit info and focus product
+function restoreEditFromSession() {
+  let raw = null;
+  try {
+    raw = sessionStorage.getItem("editProduct");
+  } catch (e) {
+    console.error("restoreEditFromSession: sessionStorage unavailable", e);
+    return;
+  }
+  if (!raw) return;
+  let payload;
+  try {
+    payload = JSON.parse(raw);
+  } catch (e) {
+    console.warn("restoreEditFromSession: invalid payload", raw);
+    sessionStorage.removeItem("editProduct");
+    return;
+  }
+  const { productId, quantity } = payload;
+  const el = document.querySelector(`[data-product-id="${productId}"]`);
+  if (!el) return;
+  // highlight and scroll similar to search highlight
+  el.classList.add("search-highlight");
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+  // prefill quantity input
+  const input = el.querySelector(".quantity-input");
+  if (input) {
+    input.value = Number(quantity) || 1;
+  }
+  // clear the session key so it doesn't persist
+  sessionStorage.removeItem("editProduct");
+  // remove highlight after a short delay
+  setTimeout(() => el.classList.remove("search-highlight"), 3000);
+}
+
+restoreEditFromSession();
+
 // --- Search / highlight functionality ---
 function searchProduct() {
   // PreviousHighlight function
