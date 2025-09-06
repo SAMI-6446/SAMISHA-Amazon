@@ -51,7 +51,9 @@ export function renderOrderSummary() {
                 ${CartItem.quantity}
                 </span>
               </span>
-              <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchingproduct.id}">
+              <span class="update-quantity-link link-primary js-update-link" data-product-id="${
+                matchingproduct.id
+              }">
                 Update
               </span>
               <span class="delete-quantity-link link-primary js-delet-link" data-product-id="${
@@ -166,7 +168,9 @@ export function renderOrderSummary() {
         link.addEventListener("click", () => {
           const productId = link.dataset.productId;
           // find the cart item to prefill data on product page
-          const item = cart.find((c) => String(c.productid) === String(productId));
+          const item = cart.find(
+            (c) => String(c.productid) === String(productId)
+          );
           const quantity = item ? Number(item.quantity) || 1 : 1;
           try {
             sessionStorage.setItem(

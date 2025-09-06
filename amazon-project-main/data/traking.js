@@ -3,12 +3,12 @@ import { getProduct } from "./products.js";
 export function renderTrackedProduct() {
   let raw = null;
   try {
-    raw = sessionStorage.getItem('trackProduct');
+    raw = sessionStorage.getItem("trackProduct");
   } catch (e) {
-    console.error('tracking: sessionStorage unavailable', e);
+    console.error("tracking: sessionStorage unavailable", e);
     return;
   }
-  const container = document.querySelector('.js-tracking-container');
+  const container = document.querySelector(".js-tracking-container");
   if (!raw) {
     if (container) {
       container.innerHTML = `
@@ -23,8 +23,8 @@ export function renderTrackedProduct() {
   try {
     payload = JSON.parse(raw);
   } catch (e) {
-    console.warn('tracking: invalid payload', raw);
-    sessionStorage.removeItem('trackProduct');
+    console.warn("tracking: invalid payload", raw);
+    sessionStorage.removeItem("trackProduct");
     return;
   }
   const { productId } = payload;
@@ -41,7 +41,7 @@ export function renderTrackedProduct() {
 
   const product = getProduct(productId);
   if (!product) {
-    console.warn('tracking: product not found', productId);
+    console.warn("tracking: product not found", productId);
     if (container) {
       container.innerHTML = `
         <div class="tracking-empty">
@@ -56,11 +56,13 @@ export function renderTrackedProduct() {
 
   container.innerHTML = `
     <div class="tracking-product">
-      <div class="product-image-container"><img src="${product.image}" alt="${product.name}" /></div>
+      <div class="product-image-container"><img src="${product.image}" alt="${
+    product.name
+  }" /></div>
       <div class="product-info">
         <h2 class="product-name">${product.name}</h2>
         <div class="product-price">${product.getPrice()}</div>
-        <div class="product-description">${product.description || ''}</div>
+        <div class="product-description">${product.description || ""}</div>
         <div class="tracking-status">Status: In transit</div>
       </div>
     </div>
@@ -68,4 +70,4 @@ export function renderTrackedProduct() {
 }
 
 // auto-run when loaded on tracking page
-document.addEventListener('DOMContentLoaded', renderTrackedProduct);
+document.addEventListener("DOMContentLoaded", renderTrackedProduct);

@@ -76,12 +76,12 @@ function generateHtml() {
       cartQuntity();
       // if we arrived here from an editProduct intent with a returnTo, go back
       try {
-        const raw = sessionStorage.getItem('editProduct');
+        const raw = sessionStorage.getItem("editProduct");
         if (raw) {
           const payload = JSON.parse(raw);
           if (payload && payload.returnTo) {
             // clear the intent and navigate back
-            sessionStorage.removeItem('editProduct');
+            sessionStorage.removeItem("editProduct");
             window.location.href = payload.returnTo;
             return;
           }
@@ -133,15 +133,17 @@ function restoreEditFromSession() {
       addtoCart(productId, qty);
       cartQuntity();
     } catch (e) {
-      console.error('restoreEditFromSession: autoAdd failed', e);
+      console.error("restoreEditFromSession: autoAdd failed", e);
     }
     // remove intent so it doesn't re-run
-    try { sessionStorage.removeItem('editProduct'); } catch(e){}
+    try {
+      sessionStorage.removeItem("editProduct");
+    } catch (e) {}
     // briefly flash an "Added" state on the tile (existing markup has .added-to-cart)
-    const addedEl = el.querySelector('.added-to-cart');
+    const addedEl = el.querySelector(".added-to-cart");
     if (addedEl) {
-      addedEl.classList.add('visible');
-      setTimeout(() => addedEl.classList.remove('visible'), 2000);
+      addedEl.classList.add("visible");
+      setTimeout(() => addedEl.classList.remove("visible"), 2000);
     }
     // remove highlight after a short delay
     setTimeout(() => el.classList.remove("search-highlight"), 1800);

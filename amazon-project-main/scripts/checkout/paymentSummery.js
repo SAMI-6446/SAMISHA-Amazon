@@ -93,7 +93,7 @@ export function renderPaymentSummary() {
     if (!messSpace) return;
 
     // If a notify already exists, remove it and clear previous timeout
-    const existing = messSpace.querySelector('.js-cart-empty-notify');
+    const existing = messSpace.querySelector(".js-cart-empty-notify");
     if (existing) {
       existing.remove();
     }
@@ -102,20 +102,24 @@ export function renderPaymentSummary() {
       notifyTimeoutId = null;
     }
 
-    const notify = document.createElement('div');
-    notify.className = 'js-cart-empty-notify';
+    const notify = document.createElement("div");
+    notify.className = "js-cart-empty-notify";
 
-    const btn = document.createElement('button');
-    btn.className = 'notify-dismiss';
-    btn.setAttribute('aria-label', 'Dismiss notification');
-    btn.textContent = '×';
-    btn.addEventListener('click', () => {
+    const btn = document.createElement("button");
+    btn.className = "notify-dismiss";
+    btn.setAttribute("aria-label", "Dismiss notification");
+    btn.textContent = "×";
+    btn.addEventListener("click", () => {
       if (notify.parentNode) notify.parentNode.removeChild(notify);
-      if (notifyTimeoutId) { clearTimeout(notifyTimeoutId); notifyTimeoutId = null; }
+      if (notifyTimeoutId) {
+        clearTimeout(notifyTimeoutId);
+        notifyTimeoutId = null;
+      }
     });
 
-    const text = document.createElement('div');
-    text.textContent = 'Your cart is empty. Please add products before placing your order.';
+    const text = document.createElement("div");
+    text.textContent =
+      "Your cart is empty. Please add products before placing your order.";
 
     notify.appendChild(btn);
     notify.appendChild(text);
@@ -136,7 +140,7 @@ export function renderPaymentSummary() {
       : 0;
     if ((cart || []).length === 0 || renderedCount === 0) {
       showNotify();
-       
+
       return;
     }
     // remove notify if present
@@ -144,17 +148,17 @@ export function renderPaymentSummary() {
     if (notify) notify.remove();
 
     // clear the cart DOM so items disappear immediately for the user
-    const orderSummaryEl = document.querySelector('.js-order-summary');
+    const orderSummaryEl = document.querySelector(".js-order-summary");
     if (orderSummaryEl) {
-      orderSummaryEl.innerHTML = '';
+      orderSummaryEl.innerHTML = "";
       // show a small confirmation message instead
-      const msg = document.createElement('div');
-      msg.className = 'place-order-confirm';
-      msg.textContent = 'Thank you — your order is being placed.';
+      const msg = document.createElement("div");
+      msg.className = "place-order-confirm";
+      msg.textContent = "Thank you — your order is being placed.";
       orderSummaryEl.appendChild(msg);
     }
-    const cartQty = document.querySelector('.cart-quantity');
-    if (cartQty) cartQty.textContent = '0';
+    const cartQty = document.querySelector(".cart-quantity");
+    if (cartQty) cartQty.textContent = "0";
 
     // finally, persist the order and clear storage
     addOrder();
