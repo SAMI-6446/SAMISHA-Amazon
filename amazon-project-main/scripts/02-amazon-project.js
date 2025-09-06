@@ -74,6 +74,21 @@ function generateHtml() {
       }
       addtoCart(productId, qty);
       cartQuntity();
+      // if we arrived here from an editProduct intent with a returnTo, go back
+      try {
+        const raw = sessionStorage.getItem('editProduct');
+        if (raw) {
+          const payload = JSON.parse(raw);
+          if (payload && payload.returnTo) {
+            // clear the intent and navigate back
+            sessionStorage.removeItem('editProduct');
+            window.location.href = payload.returnTo;
+            return;
+          }
+        }
+      } catch (e) {
+        // ignore
+      }
     });
   });
 }
@@ -100,7 +115,7 @@ function restoreEditFromSession() {
     sessionStorage.removeItem("editProduct");
     return;
   }
-  const { productId, quantity } = payload;
+  const { productId, quantity, returnTo, autoAdd } = payload;
   const el = document.querySelector(`[data-product-id="${productId}"]`);
   if (!el) return;
   // highlight and scroll similar to search highlight
@@ -111,8 +126,28 @@ function restoreEditFromSession() {
   if (input) {
     input.value = Number(quantity) || 1;
   }
-  // clear the session key so it doesn't persist
-  sessionStorage.removeItem("editProduct");
+  // if autoAdd is requested, add the product now and clear the intent
+  if (autoAdd) {
+    const qty = Number(quantity) || 1;
+    try {
+      addtoCart(productId, qty);
+      cartQuntity();
+    } catch (e) {
+      console.error('restoreEditFromSession: autoAdd failed', e);
+    }
+    // remove intent so it doesn't re-run
+    try { sessionStorage.removeItem('editProduct'); } catch(e){}
+    // briefly flash an "Added" state on the tile (existing markup has .added-to-cart)
+    const addedEl = el.querySelector('.added-to-cart');
+    if (addedEl) {
+      addedEl.classList.add('visible');
+      setTimeout(() => addedEl.classList.remove('visible'), 2000);
+    }
+    // remove highlight after a short delay
+    setTimeout(() => el.classList.remove("search-highlight"), 1800);
+    return;
+  }
+  // only clear the session key later after the user acts; keep it so add flow can redirect back
   // remove highlight after a short delay
   setTimeout(() => el.classList.remove("search-highlight"), 3000);
 }

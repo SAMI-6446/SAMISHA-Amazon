@@ -99,7 +99,7 @@ import { getProduct } from "./products.js";
               <div class="product-quantity">
                 Quantity: ${itemDtail.quantity}
               </div>
-              <button class="buy-again-button button-primary">
+              <button class="buy-again-button button-primary" data-product-id="${itemDtail.productid || itemDtail.id || ''}" data-quantity="${itemDtail.quantity}">
                 <img class="buy-again-icon" src="images/icons/buy-again.png">
                 <span class="buy-again-message">Buy it again</span>
               </button>
@@ -150,6 +150,24 @@ import { getProduct } from "./products.js";
       return;
        }
     container.innerHTML = ordersGrid;
+
+    // attach buy-again listeners: navigate to store with an edit intent and return target
+    function setupBuyAgain() {
+      document.querySelectorAll('.buy-again-button').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const productId = btn.dataset.productId;
+          const quantity = Number(btn.dataset.quantity) || 1;
+          try {
+            // request the store page to auto-add this product to cart
+            sessionStorage.setItem('editProduct', JSON.stringify({ productId, quantity, autoAdd: true }));
+          } catch (e) {
+            console.error('orders: failed to set editProduct for buy again', e);
+          }
+          window.location.href = 'amazon.html';
+        });
+      });
+    }
+    setupBuyAgain();
   }
   export function addOrder() {
     // remove any placeholder/default orders before adding a real order
