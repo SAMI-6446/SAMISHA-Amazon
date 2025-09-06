@@ -34,7 +34,10 @@
   margin-top: 25px;
   margin-bottom: 50px;
 }
-
+.product-image-container img{
+  max-width: 150px;
+  max-height: 150px;  
+}
 .progress-labels-container {
   display: flex;
   justify-content: space-between;
