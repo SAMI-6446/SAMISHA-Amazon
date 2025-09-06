@@ -1,5 +1,5 @@
 import { formatCurrency } from "../scripts/utils/money.js";
-import { cart } from "./cart.js";
+import { cart, saveCartLocal } from "./cart.js";
 import { getDeliveryOption } from "./delivery-options.js";
 import { getProduct } from "./products.js";
 
@@ -159,8 +159,17 @@ import { getProduct } from "./products.js";
       // ignore and proceed
       console.warn("addOrder: failed to strip default order", e);
     }
-    order.unshift(cart);
+    // copy the cart items so clearing the cart won't mutate the saved order
+    const itemsCopy = Array.isArray(cart) ? JSON.parse(JSON.stringify(cart)) : [];
+    order.unshift(itemsCopy);
     saveLocal();
+    // clear the active cart and persist
+    try {
+      if (Array.isArray(cart)) cart.length = 0;
+      saveCartLocal();
+    } catch (e) {
+      console.warn("addOrder: failed to clear cart", e);
+    }
     window.location.href = "orders.html";
   };
   document.addEventListener("DOMContentLoaded", () => {

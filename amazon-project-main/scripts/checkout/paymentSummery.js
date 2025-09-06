@@ -139,9 +139,24 @@ export function renderPaymentSummary() {
        
       return;
     }
-    // remove notify if present then place order
+    // remove notify if present
     const notify = container.querySelector(".js-cart-empty-notify");
     if (notify) notify.remove();
+
+    // clear the cart DOM so items disappear immediately for the user
+    const orderSummaryEl = document.querySelector('.js-order-summary');
+    if (orderSummaryEl) {
+      orderSummaryEl.innerHTML = '';
+      // show a small confirmation message instead
+      const msg = document.createElement('div');
+      msg.className = 'place-order-confirm';
+      msg.textContent = 'Thank you — your order is being placed.';
+      orderSummaryEl.appendChild(msg);
+    }
+    const cartQty = document.querySelector('.cart-quantity');
+    if (cartQty) cartQty.textContent = '0';
+
+    // finally, persist the order and clear storage
     addOrder();
   });
 }
