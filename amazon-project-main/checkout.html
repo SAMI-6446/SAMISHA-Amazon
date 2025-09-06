@@ -6,61 +6,77 @@
     <!-- This code is needed for responsive design to work.
       (Responsive design = make the website look good on
       smaller screen sizes like a phone or a tablet). -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Load a font called Roboto from Google Fonts. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Here are the CSS files for this page. -->
-    <link rel="stylesheet" href="styles/shared/general.css" />
-    <link rel="stylesheet" href="styles/pages/checkout/checkout-header.css" />
-    <link rel="stylesheet" href="styles/pages/checkout/checkout.css" />
+    <link rel="stylesheet" href="styles/shared/general.css">
+    <link rel="stylesheet" href="styles/pages/checkout/checkout-header.css">
+    <link rel="stylesheet" href="styles/pages/checkout/checkout.css">
   </head>
   <body>
     <div class="checkout-header">
       <div class="header-content">
         <div class="checkout-header-left-section">
           <a href="amazon.html">
-            <img class="amazon-logo" src="images/amazon-logo.png" />
-            <img
-              class="amazon-mobile-logo"
-              src="images/amazon-mobile-logo.png"
-            />
+            <img class="amazon-logo" src="images/amazon-logo.png">
+            <img class="amazon-mobile-logo" src="images/amazon-mobile-logo.png">
           </a>
         </div>
 
+
         <div class="checkout-header-middle-section">
-          Checkout (<a class="return-to-home-link" href="amazon.html">
-            <p class="cart-quantity"></p> </a
-          >)
+          Checkout (<a class="return-to-home-link"
+            href="amazon.html">3 items</a>)
         </div>
 
         <div class="checkout-header-right-section">
-          <img src="images/icons/checkout-lock-icon.png" />
+          <img src="images/icons/checkout-lock-icon.png">
         </div>
       </div>
     </div>
 
     <div class="main">
-      <div class="page-title">Review your order</div>
-
-      <div class="checkout-grid">
-        <div class="js-order-summary">
-          <!-- order is add dramaticaly from javaScript -->
-        </div>
-
-        <!-- payment-summary is start here -->
-        <div class="order-summary">
-          <div class="payment-summary js-payment-summery"></div>
-        </div>
-        <!-- payment summery is ended here  -->
+      <div class="page-title">
+        Review your order
       </div>
+
+
+      <div class="checkout-grid ">
+
+
+       <div class="js-order-summary">
+
+       </div>
+
+   <!-- payment-summary is start here -->
+       <div class="order-summary">
+        <div class="payment-summary js-payment-summery">
+          
+        </div>
+      </div>
+<!-- payment summery is ended here  -->
+
+
     </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script src="./node_modules/dayjs/dayjs.min.js"></script>
     <script src="./scripts/checkout.js" type="module"></script>

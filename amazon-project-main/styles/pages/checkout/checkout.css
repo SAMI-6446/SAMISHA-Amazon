@@ -199,56 +199,7 @@
   border-top: 1px solid rgb(222, 222, 222);
   padding-top: 18px;
 }
-.js-cart-empty-notify {
-  background-color: #fcebebf8;
-  color: rgb(243, 10, 10);
-  padding: 12px;
-  border-radius: 4px;
-  margin-bottom: 8px;
-  font-weight: 600;
-  font-size: small;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-}
 
-/* Order empty notification (shared with cart empty) */
-.js-order-empty-notify {
-  position: relative;
-  left: 10%;
-  top: 100px;
-  background-color: #ffecec;
-  color: #d10606e8;
-  padding: 10px;
-  border-radius: 4px;
-  margin: 8px 0;
-  font-weight: 600;
-  display: flex-box;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  max-width: 300px;
-}
-
-.notify-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.button-primary {
-  padding: 6px 10px;
-  border-radius: 6px;
-  position: relative;
-  margin-top: 20px;
-}
-
-.notify-dismiss {
-  float: right;
-  background: transparent;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-}
 .place-order-button {
   width: 100%;
   padding-top: 12px;

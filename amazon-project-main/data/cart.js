@@ -1,19 +1,7 @@
 export let cart;
-// internal flag: true when cart was populated with the two default placeholder items
-let cartWasDefault = false;
 export function loadFromStorage() {
-  const raw = localStorage.getItem("cart");
-  if (raw) {
-    try {
-      cart = JSON.parse(raw) || [];
-      cartWasDefault = false;
-    } catch (e) {
-      // if parsing fails, fall back to defaults
-      cart = [];
-      cartWasDefault = false;
-    }
-  } else {
-    // keep friendly defaults for first-time view, but mark them so we can remove
+  cart = JSON.parse(localStorage.getItem("cart"));
+  if (!cart) {
     cart = [
       {
         productid: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -26,21 +14,12 @@ export function loadFromStorage() {
         deliveryOptions: "2",
       },
     ];
-    cartWasDefault = true;
   }
 }
 
 loadFromStorage();
 
-export function addtoCart(productId, quantity = 1) {
-  // If cart was the initial default, clear it before adding a real product
-  if (cartWasDefault) {
-    cart = [];
-    cartWasDefault = false;
-  }
-
-  let qty = Math.floor(Number(quantity)) || 1;
-
+export function addtoCart(productId) {
   let matchingItem;
 
   cart.forEach((cartItem) => {
@@ -50,17 +29,16 @@ export function addtoCart(productId, quantity = 1) {
   });
 
   if (matchingItem) {
-    matchingItem.quantity = (matchingItem.quantity || 0) + qty;
+    matchingItem.quantity += 1;
   } else {
     cart.push({
       productid: productId,
-      quantity: qty,
+      quantity: 1,
       deliveryOptions: "1",
     });
   }
   saveCartLocal();
 }
-
 export function cartQuntity() {
   let cartquantity = 0;
   cart.forEach((cartItem) => {
@@ -68,7 +46,6 @@ export function cartQuntity() {
   });
   document.querySelector(".cart-quantity").textContent = cartquantity;
 }
-
 export function removeCartItem(productId) {
   let newCart = [];
   cart.forEach((cartItem) => {
