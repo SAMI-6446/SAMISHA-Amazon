@@ -81,7 +81,10 @@ import { getProduct } from "./products.js";
       let productDtailsHtml = "";
       let ProductPrice = 0;
   // loop through order porduct and generate its HTML 
-      orderProducts.forEach((itemDtail) => {
+      // When rendering product details, keep a reference to the original cart item so
+      // we can reliably use its productid for actions like tracking or buy-again.
+      orderProducts.forEach((itemDtail, index) => {
+        const originalItem = groupOfCart[index];
         ProductPrice += itemDtail.priceCents * itemDtail.quantity;
         productDtailsHtml += `
             <div class="product-image-container">
@@ -99,18 +102,16 @@ import { getProduct } from "./products.js";
               <div class="product-quantity">
                 Quantity: ${itemDtail.quantity}
               </div>
-              <button class="buy-again-button button-primary" data-product-id="${itemDtail.productid || itemDtail.id || ''}" data-quantity="${itemDtail.quantity}">
+              <button class="buy-again-button button-primary" data-product-id="${originalItem.productid || itemDtail.id || ''}" data-quantity="${itemDtail.quantity}">
                 <img class="buy-again-icon" src="images/icons/buy-again.png">
                 <span class="buy-again-message">Buy it again</span>
               </button>
             </div>
 
             <div class="product-actions">
-              <a href="tracking.html">
-                <button class="track-package-button button-secondary">
-                  Track package
-                </button>
-              </a>
+              <button class="track-package-button button-secondary js-track-button" data-product-id="${originalItem.productid || itemDtail.id || ''}">
+                Track package
+              </button>
             </div> 
           `;
       });
@@ -151,7 +152,7 @@ import { getProduct } from "./products.js";
        }
     container.innerHTML = ordersGrid;
 
-    // attach buy-again listeners: navigate to store with an edit intent and return target
+  // attach buy-again listeners: navigate to store with an edit intent and return target
     function setupBuyAgain() {
       document.querySelectorAll('.buy-again-button').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -168,6 +169,22 @@ import { getProduct } from "./products.js";
       });
     }
     setupBuyAgain();
+
+    // attach track-package listeners
+    function setupTrackButtons() {
+      document.querySelectorAll('.js-track-button').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const productId = btn.dataset.productId;
+          try {
+            sessionStorage.setItem('trackProduct', JSON.stringify({ productId }));
+          } catch (e) {
+            console.error('orders: failed to set trackProduct', e);
+          }
+          window.location.href = 'tracking.html';
+        });
+      });
+    }
+    setupTrackButtons();
   }
   export function addOrder() {
     // remove any placeholder/default orders before adding a real order
